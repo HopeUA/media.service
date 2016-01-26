@@ -1,0 +1,12 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "mongo": {
+    "host": "192.168.99.100",
+    "database": "media",
+    "name": "mongo",
+    "connector": "mongodb"
+  }
+}

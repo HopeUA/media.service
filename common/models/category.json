@@ -1,0 +1,37 @@
+{
+  "name": "Category",
+  "description": "Media category",
+  "plural": "categories",
+  "base": "PersistedModel",
+  "strict": true,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "title_ru": {
+      "type": "String"
+    },
+    "title_ua": {
+      "type": "String"
+    },
+    "sort": {
+      "type": "Number"
+    },
+    "uid": {
+      "type": "String",
+      "id": true,
+      "required": true,
+      "index": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "shows": {
+      "type": "hasMany",
+      "model": "Show"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

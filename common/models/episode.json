@@ -1,0 +1,57 @@
+{
+  "name": "Episode",
+  "description": "Media episode",
+  "plural": "episodes",
+  "base": "PersistedModel",
+  "strict": true,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "uid": {
+      "type": "String",
+      "id": true,
+      "required": true,
+      "index": true
+    },
+    "title": {
+      "type": "String"
+    },
+    "desc": {
+      "type": "String"
+    },
+    "tags": {
+      "type": [
+        "String"
+      ]
+    },
+    "publish": {
+      "type": "Date"
+    },
+    "language": {
+      "type": "String"
+    },
+    "author": {
+      "type": "String"
+    },
+    "duration": {
+      "type": "Number"
+    },
+    "hd": {
+      "type": "Boolean"
+    },
+    "youtube": {
+      "type": "String"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "season": {
+      "type": "belongsTo",
+      "model": "Season"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

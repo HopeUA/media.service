@@ -1,0 +1,40 @@
+{
+  "name": "Show",
+  "description": "Media show",
+  "plural": "shows",
+  "base": "PersistedModel",
+  "strict": true,
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "title": {
+      "type": "String"
+    },
+    "uid": {
+      "type": "String",
+      "id": true,
+      "required": true,
+      "index": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "seasons": {
+      "type": "hasMany",
+      "model": "Season"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "Category"
+    },
+    "episodes": {
+      "type": "hasMany",
+      "model": "Episode",
+      "through": "Season"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
