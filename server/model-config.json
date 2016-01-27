@@ -45,12 +45,6 @@
     "$promise": {},
     "$resolved": true
   },
-  "Season": {
-    "dataSource": "mongo",
-    "public": false,
-    "$promise": {},
-    "$resolved": true
-  },
   "Category": {
     "dataSource": "mongo",
     "public": true,

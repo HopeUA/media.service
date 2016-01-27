@@ -9,30 +9,34 @@
     "validateUpsert": true
   },
   "properties": {
-    "title": {
-      "type": "String"
-    },
     "uid": {
       "type": "String",
       "id": true,
       "required": true,
       "index": true
+    },
+    "title": {
+      "type": "String"
+    },
+    "description": {
+      "type": {
+        "short": "String",
+        "medium": "String",
+        "full": "String",
+        "days": "String",
+        "time": "String"
+      }
     }
   },
   "validations": [],
   "relations": {
-    "seasons": {
-      "type": "hasMany",
-      "model": "Season"
-    },
     "category": {
       "type": "belongsTo",
       "model": "Category"
     },
     "episodes": {
       "type": "hasMany",
-      "model": "Episode",
-      "through": "Season"
+      "model": "Episode"
     }
   },
   "acls": [],

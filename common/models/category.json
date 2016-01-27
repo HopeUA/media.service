@@ -9,20 +9,20 @@
     "validateUpsert": true
   },
   "properties": {
-    "title_ru": {
-      "type": "String"
-    },
-    "title_ua": {
-      "type": "String"
-    },
-    "sort": {
-      "type": "Number"
-    },
     "uid": {
       "type": "String",
       "id": true,
       "required": true,
       "index": true
+    },
+    "title": {
+      "type": {
+        "ru": "String",
+        "uk": "String"
+      }
+    },
+    "sort": {
+      "type": "Number"
     }
   },
   "validations": [],

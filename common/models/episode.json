@@ -18,7 +18,7 @@
     "title": {
       "type": "String"
     },
-    "desc": {
+    "description": {
       "type": "String"
     },
     "tags": {
@@ -41,6 +41,10 @@
     "hd": {
       "type": "Boolean"
     },
+    "views": {
+      "type": "Number",
+      "default": 0
+    },
     "youtube": {
       "type": "String"
     }
@@ -49,7 +53,7 @@
   "relations": {
     "season": {
       "type": "belongsTo",
-      "model": "Season"
+      "model": "Show"
     }
   },
   "acls": [],
