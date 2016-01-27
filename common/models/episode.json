@@ -51,7 +51,7 @@
   },
   "validations": [],
   "relations": {
-    "season": {
+    "show": {
       "type": "belongsTo",
       "model": "Show"
     }
