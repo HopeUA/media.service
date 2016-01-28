@@ -1,7 +1,7 @@
 import loopback from 'loopback';
 import boot from 'loopback-boot';
 
-const app = loopback();
+const app = module.exports = loopback();
 
 app.start = () => {
     // start the web server
@@ -18,9 +18,9 @@ app.start = () => {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, (err) => {
-    if (err) {
-        throw err;
+boot(app, __dirname, (error) => {
+    if (error) {
+        throw error;
     }
 
     // start the server if `$ node server.js`
