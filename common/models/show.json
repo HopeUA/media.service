@@ -39,6 +39,19 @@
       "model": "Episode"
     }
   },
-  "acls": [],
+  "acls": [
+    {
+      "accessType": "WRITE",
+      "permission": "DENY",
+      "principalType": "ROLE",
+      "principalId": "$everyone"
+    },
+    {
+      "accessType": "WRITE",
+      "permission": "ALLOW",
+      "principalType": "ROLE",
+      "principalId": "RW"
+    }
+  ],
   "methods": {}
 }
