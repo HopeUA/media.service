@@ -1,11 +1,3 @@
-module.exports = (app, next) => {
-    init(app).then(() => {
-        next();
-    }).catch((error) => {
-        console.error(`Users boot error: ${error.message}`);
-    });
-};
-
 const roleRW = 'RW';
 
 async function init(app) {
@@ -23,7 +15,7 @@ async function init(app) {
 
     // Init Users
     const defaultUsers = require('server/users.json');
-    for (let user of defaultUsers) {
+    for (const user of defaultUsers) {
         try {
             let appUser = await User.findOne({ where: { username: user.username } });
             if (appUser !== null) {
@@ -47,3 +39,11 @@ async function init(app) {
         }
     }
 }
+
+module.exports = (app, next) => {
+    init(app).then(() => {
+        next();
+    }).catch((error) => {
+        console.error(`Users boot error: ${error.message}`);
+    });
+};

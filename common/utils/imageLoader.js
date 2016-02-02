@@ -1,18 +1,6 @@
 import Fetch from 'node-fetch';
 import App from 'server/server';
 
-export default class imageLoader {
-    static async episodeCover(uid) {
-        let url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-cover.jpg`;
-
-        if (!await isResourceExists(url)) {
-            url = 'Not found';
-        }
-
-        return url;
-    }
-}
-
 async function isResourceExists(url) {
     let exists = null;
     try {
@@ -35,4 +23,16 @@ async function isResourceExists(url) {
     }
 
     return exists;
+}
+
+export default class imageLoader {
+    static async episodeCover(uid) {
+        let url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-cover.jpg`;
+
+        if (!await isResourceExists(url)) {
+            url = 'Not found';
+        }
+
+        return url;
+    }
 }
