@@ -11,7 +11,7 @@ module.exports = function (Episode) {
     Episode.observe('loaded', (ctx, next) => {
         const episode = ctx.instance;
 
-        (async function() {
+        (async () => {
             return await imageLoader.episodeCover(episode.uid);
         })().then((image) => {
             episode.image = image;
