@@ -15,11 +15,7 @@ async function isResourceExists(url) {
         });
         exists = response.status === 200;
 
-        try {
-            App.cache.setAsync(url, exists);
-        } catch (error) {
-            console.error(error.message);
-        }
+        App.cache.setAsync(url, exists);
     }
 
     return exists;
