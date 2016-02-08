@@ -26,7 +26,27 @@ export default class imageLoader {
         let url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-cover.jpg`;
 
         if (!await isResourceExists(url)) {
+            return await imageLoader.showCover(uid.substring(0, 4));
+        }
+
+        return url;
+    }
+
+    static async showCover(uid) {
+        let url = `https://cdn.hope.ua/media/shows/${uid}/${uid}-cover.jpg`;
+
+        if (!await isResourceExists(url)) {
             url = 'Not found';
+        }
+
+        return url;
+    }
+
+    static async showBackground(uid) {
+        let url = `https://cdn.hope.ua/media/shows/${uid}/${uid}-background.jpg`;
+
+        if (!await isResourceExists(url)) {
+            url = 'https://cdn.hope.ua/media/defaults/show-background.jpg';
         }
 
         return url;

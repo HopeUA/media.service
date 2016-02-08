@@ -1,6 +1,35 @@
 /* eslint-disable no-unused-vars */
 
+import imageLoader from 'common/utils/imageLoader';
+import Promise from 'bluebird';
+
+function cover(show) {
+    return imageLoader.showCover(show.uid);
+}
+
+function background(show) {
+    return imageLoader.showBackground(show.uid);
+}
+
 module.exports = function (Show) {
+    Show.observe('loaded', (ctx, next) => {
+        const show = ctx.instance;
+
+        Promise.all([
+            cover(show),
+            background(show)
+        ]).then((results) => {
+            show.images = {
+                cover: results[0],
+                background: results[1]
+            };
+            next();
+        }).catch((error) => {
+            console.error(error);
+            next();
+        });
+    });
+
     // Popular
     Show.remoteMethod('popular', {
         http: { verb: 'get' },

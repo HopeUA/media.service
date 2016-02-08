@@ -73,12 +73,6 @@ module.exports = function (Episode) {
         });
     });
 
-    // Episode.afterRemote('find', (ctx, results, next) => {
-    //     console.log(results);
-    //     console.log('find ep');
-    //     next();
-    // });
-
     // New
     Episode.remoteMethod('new', {
         http: { verb: 'get' },
