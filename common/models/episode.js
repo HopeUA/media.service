@@ -35,16 +35,15 @@ function linkNext(Model, episode) {
     }, { link: true });
 }
 
-function inject(episode) {
-
-}
-
 module.exports = function (Episode) {
     // Inject max limit
     Episode.observe('access', (ctx, next) => {
         if (!ctx.query.limit || ctx.query.limit > 20) {
             ctx.query.limit = 20;
         }
+        ctx.query.publish = {
+            lt: new Date()
+        };
         next();
     });
 
@@ -73,6 +72,12 @@ module.exports = function (Episode) {
             next();
         });
     });
+
+    // Episode.afterRemote('find', (ctx, results, next) => {
+    //     console.log(results);
+    //     console.log('find ep');
+    //     next();
+    // });
 
     // New
     Episode.remoteMethod('new', {
@@ -106,7 +111,7 @@ module.exports = function (Episode) {
         });
     };
 
-    // Now
+    // Now and Recommended
     Episode.remoteMethod('now', {
         http: { verb: 'get' },
         accepts: [
@@ -114,7 +119,14 @@ module.exports = function (Episode) {
         ],
         returns: { arg: 'data', type: 'Array' }
     });
-    Episode.now = (limit = 10, cb) => {
+    Episode.remoteMethod('recommended', {
+        http: { verb: 'get' },
+        accepts: [
+            {arg: 'limit', type: 'Number', default: 10}
+        ],
+        returns: { arg: 'data', type: 'Array' }
+    });
+    Episode.recommended = Episode.now = (limit = 10, cb) => {
         (async () => {
             const connector = Promise.promisifyAll(
                 Episode.getDataSource().connector
