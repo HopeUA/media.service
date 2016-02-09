@@ -6,9 +6,9 @@ async function init(app) {
     const RoleMapping = app.models.RoleMapping;
 
     // Init Roles
-    const role = await Role.findOne({ where: { name: roleRW } });
+    let role = await Role.findOne({ where: { name: roleRW } });
     if (role === null) {
-        await Role.create({
+        role = await Role.create({
             name: roleRW
         });
     }
