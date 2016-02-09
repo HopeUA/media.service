@@ -36,7 +36,7 @@ export default class imageLoader {
         let url = `https://cdn.hope.ua/media/shows/${uid}/${uid}-cover.jpg`;
 
         if (!await isResourceExists(url)) {
-            url = 'Not found';
+            url = 'https://cdn.hope.ua/media/defaults/show-cover.jpg';
         }
 
         return url;
