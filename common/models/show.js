@@ -40,7 +40,7 @@ module.exports = function (Show) {
             {arg: 'limit', type: 'Number', default: 10},
             {arg: 'offset', type: 'Number', default: 0}
         ],
-        returns: { arg: 'data', type: 'Array' }
+        returns: { type: 'Array', root: true }
     });
     Show.popular = (limit = 10, offset = 0, cb) => {
         Show.find({

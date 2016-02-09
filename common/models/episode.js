@@ -44,6 +44,7 @@ module.exports = function (Episode) {
         ctx.query.publish = {
             lt: new Date()
         };
+        ctx.query.order = 'publish DESC';
         next();
     });
 
@@ -83,11 +84,16 @@ module.exports = function (Episode) {
             {arg: 'limit', type: 'Number', default: 10},
             {arg: 'offset', type: 'Number', default: 0}
         ],
-        returns: { arg: 'data', type: 'Array' }
+        returns: { type: 'Array', root: true }
     });
     Episode.new = (limit = 10, offset = 0, cb) => {
         Episode.find({
             order: 'publish DESC',
+            where: {
+                publish: {
+                    lt: new Date()
+                }
+            },
             limit,
             offset
         }).then((result) => {
@@ -114,14 +120,14 @@ module.exports = function (Episode) {
         accepts: [
             {arg: 'limit', type: 'Number', default: 10}
         ],
-        returns: { arg: 'data', type: 'Array' }
+        returns: { type: 'Array', root: true }
     });
     Episode.remoteMethod('recommended', {
         http: { verb: 'get' },
         accepts: [
             {arg: 'limit', type: 'Number', default: 10}
         ],
-        returns: { arg: 'data', type: 'Array' }
+        returns: { type: 'Array', root: true }
     });
     Episode.recommended = Episode.now = (limit = 10, cb) => {
         (async () => {
@@ -133,6 +139,7 @@ module.exports = function (Episode) {
                 db.collection('Episode')
             );
             const rawData = await collection.aggregateAsync([
+                { $match: { publish: { $lt: new Date() } }},
                 { $sample: { size: limit }}
             ]);
 
