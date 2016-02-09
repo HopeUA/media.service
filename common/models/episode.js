@@ -50,8 +50,11 @@ module.exports = function (Episode) {
     // Inject cover and links (prev, next)
     Episode.observe('loaded', (ctx, next) => {
         const episode = ctx.instance;
-        const options = ctx.options || {};
+        if (!episode) {
+            return next();
+        }
 
+        const options = ctx.options || {};
         if (options.link) {
             return next();
         }

@@ -14,6 +14,9 @@ function background(show) {
 module.exports = function (Show) {
     Show.observe('loaded', (ctx, next) => {
         const show = ctx.instance;
+        if (!show) {
+            return next();
+        }
 
         Promise.all([
             cover(show),
