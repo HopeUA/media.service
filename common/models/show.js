@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import imageLoader from 'common/utils/imageLoader';
+import { imageLoader } from 'common/utils/loaders';
 import Promise from 'bluebird';
 
 function cover(show) {
