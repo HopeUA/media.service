@@ -37,8 +37,8 @@ module.exports = function (Show) {
     Show.remoteMethod('popular', {
         http: { verb: 'get' },
         accepts: [
-            {arg: 'limit', type: 'Number', default: 10},
-            {arg: 'offset', type: 'Number', default: 0}
+            { arg: 'limit', type: 'Number', default: 10 },
+            { arg: 'offset', type: 'Number', default: 0 }
         ],
         returns: { type: 'Array', root: true }
     });

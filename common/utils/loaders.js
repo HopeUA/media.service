@@ -23,9 +23,10 @@ async function isResourceExists(url) {
 
 export class imageLoader {
     static async episodeCover(uid) {
-        let url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-cover.jpg`;
+        const url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-cover.jpg`;
+        const exists = await isResourceExists(url);
 
-        if (!await isResourceExists(url)) {
+        if (!exists) {
             return await imageLoader.showCover(uid.substring(0, 4));
         }
 
@@ -34,8 +35,9 @@ export class imageLoader {
 
     static async showCover(uid) {
         let url = `https://cdn.hope.ua/media/shows/${uid}/${uid}-cover.jpg`;
+        const exists = await isResourceExists(url);
 
-        if (!await isResourceExists(url)) {
+        if (!exists) {
             url = 'https://cdn.hope.ua/media/defaults/show-cover.jpg';
         }
 
@@ -44,8 +46,9 @@ export class imageLoader {
 
     static async showBackground(uid) {
         let url = `https://cdn.hope.ua/media/shows/${uid}/${uid}-background.jpg`;
+        const exists = await isResourceExists(url);
 
-        if (!await isResourceExists(url)) {
+        if (!exists) {
             url = 'https://cdn.hope.ua/media/defaults/show-background.jpg';
         }
 
@@ -56,7 +59,9 @@ export class imageLoader {
 export class videoLoader {
     static async episode(uid) {
         const url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-hopeua.mov`;
-        if (!await isResourceExists(url)) {
+        const exists = await isResourceExists(url);
+
+        if (!exists) {
             return null;
         }
 

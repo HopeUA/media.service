@@ -1,4 +1,7 @@
 {
   "parser": "babel-eslint",
-  "extends": "hope"
+  "extends": "hope",
+  "rules": {
+    "generator-star-spacing": 0
+  }
 }

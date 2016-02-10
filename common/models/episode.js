@@ -76,7 +76,7 @@ module.exports = function (Episode) {
                 next: results[2].uid
             };
 
-            let source = episode.source || {};
+            const source = episode.source || {};
             source.local = {};
             if (results[3]) {
                 source.local.url = results[3];
@@ -94,8 +94,8 @@ module.exports = function (Episode) {
     Episode.remoteMethod('new', {
         http: { verb: 'get' },
         accepts: [
-            {arg: 'limit', type: 'Number', default: 10},
-            {arg: 'offset', type: 'Number', default: 0}
+            { arg: 'limit', type: 'Number', default: 10 },
+            { arg: 'offset', type: 'Number', default: 0 }
         ],
         returns: { type: 'Array', root: true }
     });
@@ -131,19 +131,19 @@ module.exports = function (Episode) {
     Episode.remoteMethod('now', {
         http: { verb: 'get' },
         accepts: [
-            {arg: 'limit', type: 'Number', default: 10}
+            { arg: 'limit', type: 'Number', default: 10 }
         ],
         returns: { type: 'Array', root: true }
     });
     Episode.remoteMethod('recommended', {
         http: { verb: 'get' },
         accepts: [
-            {arg: 'limit', type: 'Number', default: 10}
+            { arg: 'limit', type: 'Number', default: 10 }
         ],
         returns: { type: 'Array', root: true }
     });
     Episode.recommended = Episode.now = (limit = 10, cb) => {
-        (async () => {
+        (async () => { // eslint-disable-line  arrow-parens
             const connector = Promise.promisifyAll(
                 Episode.getDataSource().connector
             );
@@ -152,11 +152,11 @@ module.exports = function (Episode) {
                 db.collection('Episode')
             );
             const rawData = await collection.aggregateAsync([
-                { $match: { publish: { $lt: new Date() } }},
-                { $sample: { size: limit }}
+                { $match: { publish: { $lt: new Date() } } },
+                { $sample: { size: limit } }
             ]);
 
-            let results = [];
+            const results = [];
             for (const item of rawData) {
                 item.uid = item._id;
                 const episode = new Episode(item);
