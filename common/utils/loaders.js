@@ -21,7 +21,7 @@ async function isResourceExists(url) {
     return exists;
 }
 
-export default class imageLoader {
+export class imageLoader {
     static async episodeCover(uid) {
         let url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-cover.jpg`;
 
@@ -47,6 +47,17 @@ export default class imageLoader {
 
         if (!await isResourceExists(url)) {
             url = 'https://cdn.hope.ua/media/defaults/show-background.jpg';
+        }
+
+        return url;
+    }
+}
+
+export class videoLoader {
+    static async episode(uid) {
+        const url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-hopeua.mov`;
+        if (!await isResourceExists(url)) {
+            return null;
         }
 
         return url;

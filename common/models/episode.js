@@ -1,4 +1,4 @@
-import imageLoader from 'common/utils/imageLoader';
+import { imageLoader, videoLoader } from 'common/utils/loaders';
 import Promise from 'bluebird';
 
 function cover(episode) {
@@ -35,6 +35,10 @@ function linkNext(Model, episode) {
     }, { link: true });
 }
 
+function localFile(episode) {
+    return videoLoader.episode(episode.uid);
+}
+
 module.exports = function (Episode) {
     // Inject max limit
     Episode.observe('access', (ctx, next) => {
@@ -63,13 +67,22 @@ module.exports = function (Episode) {
         Promise.all([
             cover(episode),
             linkPrev(Episode, episode),
-            linkNext(Episode, episode)
+            linkNext(Episode, episode),
+            localFile(episode)
         ]).then((results) => {
             episode.image = results[0];
             episode.links = {
                 prev: results[1].uid,
                 next: results[2].uid
             };
+
+            let source = episode.source || {};
+            source.local = {};
+            if (results[3]) {
+                source.local.url = results[3];
+            }
+            episode.source = source;
+
             next();
         }).catch((error) => {
             console.error(error.message);
