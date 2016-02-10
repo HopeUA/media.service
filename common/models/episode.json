@@ -45,8 +45,15 @@
       "type": "Number",
       "default": 0
     },
-    "youtube": {
-      "type": "String"
+    "source": {
+      "type": {
+        "local": {
+          "url": "String"
+        },
+        "youtube": {
+          "id": "String"
+        }
+      }
     }
   },
   "validations": [],
