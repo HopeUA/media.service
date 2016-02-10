@@ -48,7 +48,9 @@ module.exports = function (Episode) {
         ctx.query.publish = {
             lt: new Date()
         };
-        ctx.query.order = 'publish DESC';
+        if (!ctx.query.order) {
+            ctx.query.order = 'publish DESC';
+        }
         next();
     });
 
@@ -85,7 +87,6 @@ module.exports = function (Episode) {
                 source.local.url = results[3];
             }
             episode.source = source;
-
             next();
         }).catch((error) => {
             console.error(error.message);
