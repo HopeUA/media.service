@@ -71,10 +71,13 @@ module.exports = function (Episode) {
             localFile(episode)
         ]).then((results) => {
             episode.image = results[0];
-            episode.links = {
-                prev: results[1].uid,
-                next: results[2].uid
-            };
+            episode.links = {};
+            if (results[1]) {
+                episode.links.prev = results[1].uid;
+            }
+            if (results[2]) {
+                episode.links.next = results[2].uid;
+            }
 
             const source = episode.source || {};
             source.local = {};
