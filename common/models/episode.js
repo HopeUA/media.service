@@ -39,13 +39,20 @@ function localFile(episode) {
     return videoLoader.episode(episode.uid);
 }
 
+function show(episode) {
+    return episode.show.getAsync();
+}
+
 module.exports = function (Episode) {
     // Inject max limit
     Episode.observe('access', (ctx, next) => {
         if (!ctx.query.limit || ctx.query.limit > 20) {
             ctx.query.limit = 20;
         }
-        ctx.query.publish = {
+        if (!ctx.query.where) {
+            ctx.query.where = {};
+        }
+        ctx.query.where.publish = {
             lt: new Date()
         };
         if (!ctx.query.order) {
@@ -70,9 +77,13 @@ module.exports = function (Episode) {
             cover(episode),
             linkPrev(Episode, episode),
             linkNext(Episode, episode),
-            localFile(episode)
+            localFile(episode),
+            show(episode)
         ]).then((results) => {
+            // Episode cover
             episode.image = results[0];
+
+            // Episode links
             episode.links = {};
             if (results[1]) {
                 episode.links.prev = results[1].uid;
@@ -81,12 +92,18 @@ module.exports = function (Episode) {
                 episode.links.next = results[2].uid;
             }
 
+            // Media source
             const source = episode.source || {};
             source.local = {};
             if (results[3]) {
                 source.local.url = results[3];
             }
             episode.source = source;
+
+            // Inject show
+            episode.__data.show = results[4];
+            episode.showId = undefined;
+
             next();
         }).catch((error) => {
             console.error(error.message);
@@ -163,6 +180,7 @@ module.exports = function (Episode) {
             const results = [];
             for (const item of rawData) {
                 item.uid = item._id;
+
                 const episode = new Episode(item);
                 const context = {
                     Model: Episode,
