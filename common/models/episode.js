@@ -111,6 +111,29 @@ module.exports = function (Episode) {
         });
     });
 
+    Episode.disableRemoteMethod('find', true);
+    Episode.remoteMethod('getOne', {
+        http: { verb: 'get', path: '/:id' },
+        accepts: [
+            { arg: 'id', type: 'String' }
+        ],
+        returns: { type: 'Object', root: true }
+    });
+
+    Episode.getOne = (id, cb) => {
+        Episode.findById(id).then((result) => {
+            if (result === null) {
+                const error = new Error('Episode not found');
+                error.statusCode = 404;
+                throw error;
+            }
+
+            cb(null, result);
+        }).catch((error) => {
+            cb(error);
+        });
+    };
+
     // New
     Episode.remoteMethod('new', {
         http: { verb: 'get' },
@@ -118,7 +141,7 @@ module.exports = function (Episode) {
             { arg: 'limit', type: 'Number', default: 10 },
             { arg: 'offset', type: 'Number', default: 0 }
         ],
-        returns: { type: 'Array', root: true }
+        returns: { arg: 'data', type: 'Array' }
     });
     Episode.new = (limit = 10, offset = 0, cb) => {
         Episode.find({
@@ -154,14 +177,14 @@ module.exports = function (Episode) {
         accepts: [
             { arg: 'limit', type: 'Number', default: 10 }
         ],
-        returns: { type: 'Array', root: true }
+        returns: { arg: 'data', type: 'Array' }
     });
     Episode.remoteMethod('recommended', {
         http: { verb: 'get' },
         accepts: [
             { arg: 'limit', type: 'Number', default: 10 }
         ],
-        returns: { type: 'Array', root: true }
+        returns: { arg: 'data', type: 'Array' }
     });
     Episode.recommended = Episode.now = (limit = 10, cb) => {
         (async () => { // eslint-disable-line  arrow-parens
