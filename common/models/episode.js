@@ -105,28 +105,28 @@ module.exports = function (Episode) {
         });
     });
 
-    //Episode.disableRemoteMethod('find', true);
-    // Episode.remoteMethod('getOne', {
-    //     http: { verb: 'get', path: '/:id' },
-    //     accepts: [
-    //         { arg: 'id', type: 'String' }
-    //     ],
-    //     returns: { type: 'Object', root: true }
-    // });
-    //
-    // Episode.getOne = (id, cb) => {
-    //     Episode.findById(id).then((result) => {
-    //         if (result === null) {
-    //             const error = new Error('Episode not found');
-    //             error.statusCode = 404;
-    //             throw error;
-    //         }
-    //
-    //         cb(null, result);
-    //     }).catch((error) => {
-    //         cb(error);
-    //     });
-    // };
+    Episode.disableRemoteMethod('find', true);
+    Episode.remoteMethod('getOne', {
+        http: { verb: 'get', path: '/:id' },
+        accepts: [
+            { arg: 'id', type: 'String' }
+        ],
+        returns: { type: 'Object', root: true }
+    });
+
+    Episode.getOne = (id, cb) => {
+        Episode.findById(id).then((result) => {
+            if (result === null) {
+                const error = new Error('Episode not found');
+                error.statusCode = 404;
+                throw error;
+            }
+
+            cb(null, result);
+        }).catch((error) => {
+            cb(error);
+        });
+    };
 
     // New
     Episode.remoteMethod('new', {
