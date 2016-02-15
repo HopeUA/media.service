@@ -52,9 +52,11 @@ module.exports = function (Episode) {
         if (!ctx.query.where) {
             ctx.query.where = {};
         }
-        ctx.query.where.publish = {
-            lt: new Date()
-        };
+        if (!ctx.query.where.publish) {
+            ctx.query.where.publish = {
+                lt: new Date()
+            };
+        }
         if (!ctx.query.order) {
             ctx.query.order = 'publish DESC';
         }
@@ -227,4 +229,39 @@ module.exports = function (Episode) {
             cb(error);
         });
     };
+
+    // Similar
+    Episode.remoteMethod('similar', {
+        http: { verb: 'get' },
+        accepts: [
+            { arg: 'limit', type: 'Number', default: 10 },
+            { arg: 'offset', type: 'Number', default: 0 }
+        ],
+        returns: { arg: 'data', type: 'Array' },
+        isStatic: false
+    });
+    Episode.prototype.similar = function(limit = 10, offset = 0, cb) {
+        Episode.find({
+            where: {
+                showId: this.show.uid
+            },
+            limit: limit + 1,
+            offset
+        }).then((result) => {
+            // Sort by publish DESC
+            result.sort((a, b) => {
+                if (a.publish < b.publish) {
+                    return 1;
+                }
+                if (a.publish > b.publish) {
+                    return -1;
+                }
+                return 0;
+            });
+
+            cb(null, result);
+        }).catch((error) => {
+            cb(error);
+        })
+    }
 };
