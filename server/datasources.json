@@ -4,7 +4,7 @@
     "connector": "memory"
   },
   "mongo": {
-    "host": "192.168.99.100",
+    "host": "192.168.99.101",
     "database": "media",
     "name": "mongo",
     "connector": "mongodb"

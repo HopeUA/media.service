@@ -6,6 +6,10 @@ function cover(episode) {
 }
 
 function linkPrev(Model, episode) {
+    if (!episode.publish) {
+        return Promise.resolve(null);
+    }
+
     return Model.findOne({
         fields: {
             uid: true
@@ -21,6 +25,10 @@ function linkPrev(Model, episode) {
 }
 
 function linkNext(Model, episode) {
+    if (!episode.publish) {
+        return Promise.resolve(null);
+    }
+
     return Model.findOne({
         fields: {
             uid: true
@@ -41,6 +49,13 @@ function localFile(episode) {
 
 function show(episode) {
     return episode.show.getAsync();
+}
+
+async function trailers(episode) {
+    return {
+        main: await videoLoader.trailer('main', episode.uid),
+        today: await videoLoader.trailer('today', episode.uid)
+    }
 }
 
 module.exports = function (Episode) {
@@ -72,7 +87,8 @@ module.exports = function (Episode) {
             linkPrev(Episode, episode),
             linkNext(Episode, episode),
             localFile(episode),
-            show(episode)
+            show(episode),
+            trailers(episode)
         ]).then((results) => {
             // Episode cover
             episode.image = results[0];
@@ -87,16 +103,32 @@ module.exports = function (Episode) {
             }
 
             // Media source
-            const source = episode.source || {};
-            source.local = {};
             if (results[3]) {
+                const source = episode.source || {};
+                source.local = {};
                 source.local.url = results[3];
+                episode.source = source;
             }
-            episode.source = source;
 
             // Inject show
             episode.__data.show = results[4];
             episode.showId = undefined;
+
+            // Trailers
+            const trailersData = results[5];
+            if (trailersData) {
+                for (const type in trailersData) {
+                    if (!trailersData.hasOwnProperty(type)) {
+                        continue;
+                    }
+                    if (trailersData[type]) {
+                        episode.trailers = episode.trailers || {};
+                        episode.trailers[type] = {};
+                        episode.trailers[type].local = {};
+                        episode.trailers[type].local.url = trailersData[type];
+                    }
+                }
+            }
 
             next();
         }).catch((error) => {
