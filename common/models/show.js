@@ -54,7 +54,32 @@ module.exports = function (Show) {
         returns: { arg: 'data', type: 'Array' }
     });
     Show.popular = (limit = 10, offset = 0, cb) => {
+        const ids = [
+            'MHKU',
+            'AFCU',
+            'FKLU',
+            'RCCU',
+            'JMLU',
+            'LPCU',
+            'CPVU',
+            'MBVU',
+            'DHNU',
+            'SSCU',
+            'LMNU',
+            'VKLU',
+            'VIVU',
+            'PMKU',
+            'SRKU',
+            'ATCU',
+            'LSNU'
+        ];
+
         Show.find({
+            where: {
+                uid: {
+                    inq: ids
+                }
+            },
             limit,
             offset
         }).then((result) => {
