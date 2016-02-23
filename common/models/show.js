@@ -11,6 +11,10 @@ function background(show) {
     return imageLoader.showBackground(show.uid);
 }
 
+function category(show) {
+    return show.category.getAsync();
+}
+
 module.exports = function (Show) {
     Show.observe('loaded', (ctx, next) => {
         const show = ctx.instance;
@@ -20,12 +24,19 @@ module.exports = function (Show) {
 
         Promise.all([
             cover(show),
-            background(show)
+            background(show),
+            category(show)
         ]).then((results) => {
+            // Images
             show.images = {
                 cover: results[0],
                 background: results[1]
             };
+
+            // Inject category
+            show.__data.category = results[2];
+            show.categoryId = undefined;
+
             next();
         }).catch((error) => {
             console.error(error);
