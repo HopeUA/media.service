@@ -55,7 +55,6 @@ module.exports = function (Show) {
     });
     Show.popular = (limit = 10, offset = 0, cb) => {
         const ids = [
-            'MHKU',
             'AFCU',
             'FKLU',
             'RCCU',
@@ -71,7 +70,12 @@ module.exports = function (Show) {
             'PMKU',
             'SRKU',
             'ATCU',
-            'LSNU'
+            'LSNU',
+            'NSCU',
+            'HDVU',
+            'MBCU',
+            'EPLU',
+            'IWCU'
         ];
 
         Show.find({
