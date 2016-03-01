@@ -7,7 +7,7 @@ module.exports = function (server, next) {
             throw error;
         }
 
-        server.cache = Promise.promisifyAll(new Cacheman(db, { collection: 'Сache' }));
+        server.cache = Promise.promisifyAll(new Cacheman(db, { collection: 'Cache' }));
         next();
     });
 };
