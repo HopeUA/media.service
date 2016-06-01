@@ -36,7 +36,8 @@ function linkNext(Model, episode) {
         where: {
             showId: episode.showId,
             publish: {
-                gt: episode.publish
+                gt: episode.publish,
+                lt: new Date()
             }
         },
         order: 'publish ASC'
@@ -267,7 +268,10 @@ module.exports = function (Episode) {
     Episode.prototype.similar = function(limit = 10, offset = 0, cb) {
         Episode.find({
             where: {
-                showId: this.show.uid
+                showId: this.show.uid,
+                publish: {
+                    lt: new Date()
+                }
             },
             limit: limit + 1,
             offset
