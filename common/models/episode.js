@@ -56,7 +56,7 @@ async function trailers(episode) {
     return {
         main: await videoLoader.trailer('main', episode.uid),
         today: await videoLoader.trailer('today', episode.uid)
-    }
+    };
 }
 
 module.exports = function (Episode) {
@@ -291,5 +291,17 @@ module.exports = function (Episode) {
         }).catch((error) => {
             cb(error);
         })
-    }
+    };
+
+    // Delete all
+    Episode.remoteMethod('deleteAll', {
+        accessType: 'WRITE',
+        returns: {
+            arg: 'count',
+            type: 'object',
+            description: 'The number of instances deleted',
+            root: true
+        },
+        http: {verb: 'del', path: '/'}
+    });
 };

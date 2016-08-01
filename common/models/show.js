@@ -180,4 +180,16 @@ module.exports = function (Show) {
             cb(error);
         });
     };
+
+    // Delete all
+    Show.remoteMethod('deleteAll', {
+        accessType: 'WRITE',
+        returns: {
+            arg: 'count',
+            type: 'object',
+            description: 'The number of instances deleted',
+            root: true
+        },
+        http: {verb: 'del', path: '/'}
+    });
 };
