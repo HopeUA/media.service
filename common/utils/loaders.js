@@ -61,11 +61,18 @@ export class videoLoader {
         const url = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-hopeua.mov`;
         const exists = await isResourceExists(url);
 
-        if (!exists) {
+        if (exists) {
+            return url;
+        }
+
+        const tempUrl = `https://cdn.hope.ua/media/shows/${uid.substring(0, 4)}/episodes/${uid.substring(4)}/${uid}-stream.mov`;
+        const tempExists = await isResourceExists(tempUrl);
+
+        if (!tempExists) {
             return null;
         }
 
-        return url;
+        return tempUrl;
     }
 
     static async trailer(type, uid) {
