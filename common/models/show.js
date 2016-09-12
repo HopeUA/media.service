@@ -2,6 +2,7 @@
 
 import { imageLoader } from 'common/utils/loaders';
 import Promise from 'bluebird';
+import ServiceConfig from 'server/service-config.json';
 
 function cover(show) {
     return imageLoader.showCover(show.uid);
@@ -54,29 +55,10 @@ module.exports = function (Show) {
         returns: { arg: 'data', type: 'Array' }
     });
     Show.popular = (limit = 10, offset = 0, cb) => {
-        const ids = [
-            'AFCU',
-            'FKLU',
-            'RCCU',
-            'JMLU',
-            'LPCU',
-            'CPVU',
-            'MBVU',
-            'DHNU',
-            'SSCU',
-            'LMNU',
-            'VKLU',
-            'VIVU',
-            'PMKU',
-            'SRKU',
-            'ATCU',
-            'LSNU',
-            'NSCU',
-            'HDVU',
-            'MBCU',
-            'EPLU',
-            'IWCU'
-        ];
+        const ids = ServiceConfig.showsPopular;
+        if (!Array.isArray(ids)) {
+            return cb([]);
+        }
 
         Show.find({
             where: {
