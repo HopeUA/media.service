@@ -1,5 +1,6 @@
 import { imageLoader, videoLoader } from 'common/utils/loaders';
 import Promise from 'bluebird';
+import ServiceConfig from 'server/service-config.json';
 
 function cover(episode) {
     return imageLoader.episodeCover(episode.uid);
@@ -206,14 +207,7 @@ module.exports = function (Episode) {
         ],
         returns: { arg: 'data', type: 'Array' }
     });
-    Episode.remoteMethod('recommended', {
-        http: { verb: 'get' },
-        accepts: [
-            { arg: 'limit', type: 'Number', default: 10 }
-        ],
-        returns: { arg: 'data', type: 'Array' }
-    });
-    Episode.recommended = Episode.now = (limit = 10, cb) => {
+    Episode.now = (limit = 10, cb) => {
         (async () => { // eslint-disable-line  arrow-parens
             const connector = Promise.promisifyAll(
                 Episode.getDataSource().connector
@@ -255,6 +249,36 @@ module.exports = function (Episode) {
         });
     };
 
+    // Recommended
+    Episode.remoteMethod('recommended', {
+        http: { verb: 'get' },
+        accepts: [
+            { arg: 'limit', type: 'Number', default: 10 }
+        ],
+        returns: { arg: 'data', type: 'Array' }
+    });
+
+    if (ServiceConfig.episodesRecommended && Array.isArray(ServiceConfig.episodesRecommended)) {
+        Episode.recommended = (limit = 10, cb) => {
+            const ids = ServiceConfig.episodesRecommended;
+
+            Episode.find({
+                where: {
+                    uid: {
+                        inq: ids
+                    }
+                },
+                limit
+            }).then((result) => {
+                cb(null, result);
+            }).catch((error) => {
+                cb(error);
+            });
+        }
+    } else {
+        Episode.recommended = Episode.now;
+    }
+    
     // Similar
     Episode.remoteMethod('similar', {
         http: { verb: 'get' },
