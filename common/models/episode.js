@@ -270,6 +270,10 @@ module.exports = function (Episode) {
                 },
                 limit
             }).then((result) => {
+                result.sort((a, b) => {
+                    return ids.indexOf(a.uid) - ids.indexOf(b.uid);
+                });
+
                 cb(null, result);
             }).catch((error) => {
                 cb(error);

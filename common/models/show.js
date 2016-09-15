@@ -69,6 +69,10 @@ module.exports = function (Show) {
             limit,
             offset
         }).then((result) => {
+            result.sort((a, b) => {
+                return ids.indexOf(a.uid) - ids.indexOf(b.uid);
+            });
+
             cb(null, result);
         }).catch((error) => {
             cb(error);
