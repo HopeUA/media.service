@@ -207,23 +207,6 @@ module.exports = function (Episode) {
         ],
         returns: { arg: 'data', type: 'Array' }
     });
-    // Episode.now = (limit = 10, cb) => {
-    //
-    //
-    //     Episode.find({
-    //         where: {
-    //             'show.uid': {
-    //                 inq: ids
-    //             }
-    //         },
-    //         limit
-    //     }).then((result) => {
-    //         cb(null, result);
-    //     }).catch((error) => {
-    //         cb(error);
-    //     });
-    //
-    // };
     Episode.now = (limit = 10, cb) => {
         const shows = ServiceConfig.showsPopular;
 
@@ -236,14 +219,28 @@ module.exports = function (Episode) {
                 db.collection('Episode')
             );
             const rawData = await collection.aggregateAsync([
-                { $match: { publish: { $lt: new Date() } } },
-                { $sample: { size: limit } }
+                { $match: {
+                    showId: { $in: shows },
+                    publish: { $lt: new Date() }
+                } },
+                { $sample: { size: 10000 } },
+                { $group: {
+                    _id: "$showId",
+                    uid: { $first: "$_id" },
+                    title: { $first: "$title" },
+                    description: { $first: "$description" },
+                    tags: { $first: "$tags" },
+                    publish: { $first: "$publish" },
+                    language: { $first: "$language" },
+                    author: { $first: "$author" },
+                    hd: { $first: "$hd" },
+                    source: { $first: "$source" },
+                    showId: { $first: "$showId" },
+                }}
             ]);
 
             const results = [];
             for (const item of rawData) {
-                item.uid = item._id;
-
                 const episode = new Episode(item);
                 const context = {
                     Model: Episode,
