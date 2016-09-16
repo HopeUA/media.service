@@ -1,6 +1,7 @@
 import { imageLoader, videoLoader } from 'common/utils/loaders';
 import Promise from 'bluebird';
 import ServiceConfig from 'server/service-config.json';
+import Moment from 'moment';
 
 function cover(episode) {
     return imageLoader.episodeCover(episode.uid);
@@ -219,24 +220,33 @@ module.exports = function (Episode) {
                 db.collection('Episode')
             );
             const rawData = await collection.aggregateAsync([
-                { $match: {
-                    showId: { $in: shows },
-                    publish: { $lt: new Date() }
-                } },
-                { $sample: { size: 10000 } },
-                { $group: {
-                    _id: "$showId",
-                    uid: { $first: "$_id" },
-                    title: { $first: "$title" },
-                    description: { $first: "$description" },
-                    tags: { $first: "$tags" },
-                    publish: { $first: "$publish" },
-                    language: { $first: "$language" },
-                    author: { $first: "$author" },
-                    hd: { $first: "$hd" },
-                    source: { $first: "$source" },
-                    showId: { $first: "$showId" },
-                }}
+                {
+                    $match: {
+                        showId: { $in: shows },
+                        publish: {
+                            $lt: new Date(),
+                            $gt: Moment().subtract(1, 'years').toDate()
+                        }
+                    }
+                },
+                {
+                    $sample: { size: 10000 }
+                },
+                {
+                    $group: {
+                        _id: "$showId",
+                        uid: { $first: "$_id" },
+                        title: { $first: "$title" },
+                        description: { $first: "$description" },
+                        tags: { $first: "$tags" },
+                        publish: { $first: "$publish" },
+                        language: { $first: "$language" },
+                        author: { $first: "$author" },
+                        hd: { $first: "$hd" },
+                        source: { $first: "$source" },
+                        showId: { $first: "$showId" },
+                    }
+                }
             ]);
 
             const results = [];
