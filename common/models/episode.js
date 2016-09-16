@@ -207,7 +207,26 @@ module.exports = function (Episode) {
         ],
         returns: { arg: 'data', type: 'Array' }
     });
+    // Episode.now = (limit = 10, cb) => {
+    //
+    //
+    //     Episode.find({
+    //         where: {
+    //             'show.uid': {
+    //                 inq: ids
+    //             }
+    //         },
+    //         limit
+    //     }).then((result) => {
+    //         cb(null, result);
+    //     }).catch((error) => {
+    //         cb(error);
+    //     });
+    //
+    // };
     Episode.now = (limit = 10, cb) => {
+        const shows = ServiceConfig.showsPopular;
+
         (async () => { // eslint-disable-line  arrow-parens
             const connector = Promise.promisifyAll(
                 Episode.getDataSource().connector
@@ -253,13 +272,14 @@ module.exports = function (Episode) {
     Episode.remoteMethod('recommended', {
         http: { verb: 'get' },
         accepts: [
-            { arg: 'limit', type: 'Number', default: 10 }
+            { arg: 'limit', type: 'Number', default: 10 },
+            { arg: 'offset', type: 'Number', default: 0 }
         ],
         returns: { arg: 'data', type: 'Array' }
     });
 
     if (ServiceConfig.episodesRecommended && Array.isArray(ServiceConfig.episodesRecommended)) {
-        Episode.recommended = (limit = 10, cb) => {
+        Episode.recommended = (limit = 10, offset = 0, cb) => {
             const ids = ServiceConfig.episodesRecommended;
 
             Episode.find({
@@ -268,7 +288,8 @@ module.exports = function (Episode) {
                         inq: ids
                     }
                 },
-                limit
+                limit,
+                offset
             }).then((result) => {
                 result.sort((a, b) => {
                     return ids.indexOf(a.uid) - ids.indexOf(b.uid);
