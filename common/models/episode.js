@@ -212,59 +212,72 @@ module.exports = function (Episode) {
         const shows = ServiceConfig.showsPopular;
 
         (async () => { // eslint-disable-line  arrow-parens
-            const connector = Promise.promisifyAll(
-                Episode.getDataSource().connector
-            );
-            const db = await connector.connectAsync();
-            const collection = Promise.promisifyAll(
-                db.collection('Episode')
-            );
-            const rawData = await collection.aggregateAsync([
-                {
-                    $match: {
-                        showId: { $in: shows },
-                        publish: {
-                            $lt: new Date(),
-                            $gt: Moment().subtract(1, 'years').toDate()
+            const Cache = Episode.app.cache;
+
+            let results = null;
+            try {
+                results = await App.cache.getAsync('episodes.now');
+            } catch (error) {
+                console.error(error.message);
+            }
+
+            if (results === null) {
+                const connector = Promise.promisifyAll(
+                    Episode.getDataSource().connector
+                );
+                const db = await connector.connectAsync();
+                const collection = Promise.promisifyAll(
+                    db.collection('Episode')
+                );
+                const rawData = await collection.aggregateAsync([
+                    {
+                        $match: {
+                            showId: { $in: shows },
+                            publish: {
+                                $lt: new Date(),
+                                $gt: Moment().subtract(1, 'years').toDate()
+                            }
+                        }
+                    },
+                    {
+                        $sample: { size: 10000 }
+                    },
+                    {
+                        $group: {
+                            _id: "$showId",
+                            uid: { $first: "$_id" },
+                            title: { $first: "$title" },
+                            description: { $first: "$description" },
+                            tags: { $first: "$tags" },
+                            publish: { $first: "$publish" },
+                            language: { $first: "$language" },
+                            author: { $first: "$author" },
+                            hd: { $first: "$hd" },
+                            source: { $first: "$source" },
+                            showId: { $first: "$showId" },
                         }
                     }
-                },
-                {
-                    $sample: { size: 10000 }
-                },
-                {
-                    $group: {
-                        _id: "$showId",
-                        uid: { $first: "$_id" },
-                        title: { $first: "$title" },
-                        description: { $first: "$description" },
-                        tags: { $first: "$tags" },
-                        publish: { $first: "$publish" },
-                        language: { $first: "$language" },
-                        author: { $first: "$author" },
-                        hd: { $first: "$hd" },
-                        source: { $first: "$source" },
-                        showId: { $first: "$showId" },
-                    }
-                }
-            ]);
+                ]);
 
-            const results = [];
-            for (const item of rawData) {
-                const episode = new Episode(item);
-                const context = {
-                    Model: Episode,
-                    instance: episode,
-                    isNewInstance: false,
-                    hookState: {},
-                    options: {}
-                };
-                try {
-                    await Episode.notifyObserversOf('loaded', context);
-                } catch (error) {
-                    console.error(error);
+                results = [];
+                for (const item of rawData) {
+                    const episode = new Episode(item);
+                    const context = {
+                        Model: Episode,
+                        instance: episode,
+                        isNewInstance: false,
+                        hookState: {},
+                        options: {}
+                    };
+                    try {
+                        await Episode.notifyObserversOf('loaded', context);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                    results.push(episode);
                 }
-                results.push(episode);
+
+                Cache.setAsync('episodes.now', results);
             }
 
             return results;
