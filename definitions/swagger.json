@@ -1,0 +1,817 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Hope.UA Media API",
+    "description": "Get shows and episodes with Media API",
+    "contact": {
+      "name": "Hope.UA IT dept.",
+      "email": "support@hope.ua"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://hope.mit-license.org/"
+    },
+    "version": "1.0"
+  },
+  "host": "media.s.hope.ua",
+  "basePath": "/v1",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/categories": {
+      "get": {
+        "description": "List of categories",
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Category"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "uid": "bible",
+                "title": {
+                  "ru": "Изучение Библии",
+                  "uk": "Вивчення Біблії"
+                },
+                "sort": 10
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shows": {
+      "get": {
+        "description": "List of shows",
+        "responses": {
+          "200": {
+            "description": "List of shows",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Show"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "uid": "LMNU",
+                "title": "ЛоМастер",
+                "description": {
+                  "short": "Чтобы сделать маленькие ручки умелыми",
+                  "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                  "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                  "days": "понедельник-чеверг",
+                  "time": "11:00"
+                },
+                "images": {
+                  "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
+                  "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
+                },
+                "category": {
+                  "uid": "child",
+                  "title": {
+                    "ru": "Детские",
+                    "uk": "Дитячі"
+                  },
+                  "sort": 5
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shows/popular": {
+      "get": {
+        "description": "List of popular shows",
+        "parameters": [
+          { "$ref": "#/parameters/limit" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of shows",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Show"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "uid": "LMNU",
+                "title": "ЛоМастер",
+                "description": {
+                  "short": "Чтобы сделать маленькие ручки умелыми",
+                  "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                  "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                  "days": "понедельник-чеверг",
+                  "time": "11:00"
+                },
+                "images": {
+                  "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
+                  "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
+                },
+                "category": {
+                  "uid": "child",
+                  "title": {
+                    "ru": "Детские",
+                    "uk": "Дитячі"
+                  },
+                  "sort": 5
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/shows/{uid}": {
+      "get": {
+        "description": "Single show",
+        "parameters": [
+          {
+            "$ref": "#/parameters/showUid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single show",
+            "schema": {
+              "$ref": "#/definitions/Show"
+            },
+            "examples": {
+              "application/json": {
+                "uid": "LMNU",
+                "title": "ЛоМастер",
+                "description": {
+                  "short": "Чтобы сделать маленькие ручки умелыми",
+                  "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                  "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                  "days": "понедельник-чеверг",
+                  "time": "11:00"
+                },
+                "images": {
+                  "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
+                  "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
+                },
+                "category": {
+                  "uid": "child",
+                  "title": {
+                    "ru": "Детские",
+                    "uk": "Дитячі"
+                  },
+                  "sort": 5
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Show not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/shows/{uid}/episodes": {
+      "get": {
+        "description": "Episode list for current Show",
+        "parameters": [
+          { "$ref": "#/parameters/showUid" },
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/offset" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Episodes",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Episode"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "data": [
+                  {
+                    "uid": "ANKU00816",
+                    "title": "Ранок ввечері",
+                    "description": "Ранкова програма ввечері! Не бачили? Тоді пропонуємо до перегляду програму \"Ранок надії\" в гостях у програми \"Ангели надії\" <br /><br />А також цікаві досвіди глядачів та учасників зйомок програм телеканалу \"Надія\"",
+                    "tags": [
+                      "телеканал Надія",
+                      "ангели Надії",
+                      "партнерство"
+                    ],
+                    "publish": "2016-10-05T16:00:00.000Z",
+                    "language": "ru,uk",
+                    "author": "Вікторія Ярош",
+                    "hd": false,
+                    "views": 0,
+                    "source": {
+                      "local": {
+                        "url": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-hopeua.mov"
+                      },
+                      "youtube": {
+                        "id": "gkOMRX6wlXg",
+                        "channel": "hopeua"
+                      }
+                    },
+                    "image": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-cover.jpg",
+                    "links": {
+                      "prev": "ANKU00716",
+                      "next": "ANKU00916"
+                    },
+                    "show": {
+                      "uid": "ANKU",
+                      "title": "Ангели Надії",
+                      "description": {
+                        "short": "",
+                        "medium": "Проект партнерства: про людей в кадрі та поза ним. Про те як знімаються програми, та як вони змінюють життя глядачів!",
+                        "days": "",
+                        "time": "",
+                        "long": ""
+                      },
+                      "images": {
+                        "cover": "https://cdn.hope.ua/media/shows/ANKU/ANKU-cover.jpg",
+                        "background": "https://cdn.hope.ua/media/defaults/show-background.jpg"
+                      },
+                      "category": {
+                        "uid": "people",
+                        "title": {
+                          "ru": "Люди и мнения",
+                          "uk": "Люди та їх думки"
+                        },
+                        "sort": 8
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "Show not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/episodes/{uid}": {
+      "get": {
+        "description": "Single Episode",
+        "parameters": [
+          { "$ref": "#/parameters/episodeUid" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Single episode",
+            "schema": {
+              "$ref": "#/definitions/Episode"
+            },
+            "examples": {
+              "application/json": {
+                "uid": "ANKU00816",
+                "title": "Ранок ввечері",
+                "description": "Ранкова програма ввечері! Не бачили? Тоді пропонуємо до перегляду програму \"Ранок надії\" в гостях у програми \"Ангели надії\" <br /><br />А також цікаві досвіди глядачів та учасників зйомок програм телеканалу \"Надія\"",
+                "tags": [
+                  "телеканал Надія",
+                  "ангели Надії",
+                  "партнерство"
+                ],
+                "publish": "2016-10-05T16:00:00.000Z",
+                "language": "ru,uk",
+                "author": "Вікторія Ярош",
+                "hd": false,
+                "views": 0,
+                "source": {
+                  "local": {
+                    "url": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-hopeua.mov"
+                  },
+                  "youtube": {
+                    "id": "gkOMRX6wlXg",
+                    "channel": "hopeua"
+                  }
+                },
+                "image": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-cover.jpg",
+                "links": {
+                  "prev": "ANKU00716",
+                  "next": "ANKU00916"
+                },
+                "show": {
+                  "uid": "ANKU",
+                  "title": "Ангели Надії",
+                  "description": {
+                    "short": "",
+                    "medium": "Проект партнерства: про людей в кадрі та поза ним. Про те як знімаються програми, та як вони змінюють життя глядачів!",
+                    "days": "",
+                    "time": "",
+                    "long": ""
+                  },
+                  "images": {
+                    "cover": "https://cdn.hope.ua/media/shows/ANKU/ANKU-cover.jpg",
+                    "background": "https://cdn.hope.ua/media/defaults/show-background.jpg"
+                  },
+                  "category": {
+                    "uid": "people",
+                    "title": {
+                      "ru": "Люди и мнения",
+                      "uk": "Люди та їх думки"
+                    },
+                    "sort": 8
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Episode not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/episodes/new": {
+      "get": {
+        "description": "List of new episodes",
+        "parameters": [
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/offset" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Episodes",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Episode"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "data": [
+                  {
+                    "uid": "ANKU00816",
+                    "title": "Ранок ввечері",
+                    "description": "Ранкова програма ввечері! Не бачили? Тоді пропонуємо до перегляду програму \"Ранок надії\" в гостях у програми \"Ангели надії\" <br /><br />А також цікаві досвіди глядачів та учасників зйомок програм телеканалу \"Надія\"",
+                    "tags": [
+                      "телеканал Надія",
+                      "ангели Надії",
+                      "партнерство"
+                    ],
+                    "publish": "2016-10-05T16:00:00.000Z",
+                    "language": "ru,uk",
+                    "author": "Вікторія Ярош",
+                    "hd": false,
+                    "views": 0,
+                    "source": {
+                      "local": {
+                        "url": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-hopeua.mov"
+                      },
+                      "youtube": {
+                        "id": "gkOMRX6wlXg",
+                        "channel": "hopeua"
+                      }
+                    },
+                    "image": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-cover.jpg",
+                    "links": {
+                      "prev": "ANKU00716",
+                      "next": "ANKU00916"
+                    },
+                    "show": {
+                      "uid": "ANKU",
+                      "title": "Ангели Надії",
+                      "description": {
+                        "short": "",
+                        "medium": "Проект партнерства: про людей в кадрі та поза ним. Про те як знімаються програми, та як вони змінюють життя глядачів!",
+                        "days": "",
+                        "time": "",
+                        "long": ""
+                      },
+                      "images": {
+                        "cover": "https://cdn.hope.ua/media/shows/ANKU/ANKU-cover.jpg",
+                        "background": "https://cdn.hope.ua/media/defaults/show-background.jpg"
+                      },
+                      "category": {
+                        "uid": "people",
+                        "title": {
+                          "ru": "Люди и мнения",
+                          "uk": "Люди та їх думки"
+                        },
+                        "sort": 8
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/episodes/recommended": {
+      "get": {
+        "description": "List of recommended episodes",
+        "parameters": [
+          { "$ref": "#/parameters/limit" },
+          { "$ref": "#/parameters/offset" }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Episodes",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Episode"
+                  }
+                }
+              }
+            },
+            "examples": {
+              "application/json": {
+                "data": [
+                  {
+                    "uid": "ANKU00816",
+                    "title": "Ранок ввечері",
+                    "description": "Ранкова програма ввечері! Не бачили? Тоді пропонуємо до перегляду програму \"Ранок надії\" в гостях у програми \"Ангели надії\" <br /><br />А також цікаві досвіди глядачів та учасників зйомок програм телеканалу \"Надія\"",
+                    "tags": [
+                      "телеканал Надія",
+                      "ангели Надії",
+                      "партнерство"
+                    ],
+                    "publish": "2016-10-05T16:00:00.000Z",
+                    "language": "ru,uk",
+                    "author": "Вікторія Ярош",
+                    "hd": false,
+                    "views": 0,
+                    "source": {
+                      "local": {
+                        "url": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-hopeua.mov"
+                      },
+                      "youtube": {
+                        "id": "gkOMRX6wlXg",
+                        "channel": "hopeua"
+                      }
+                    },
+                    "image": "https://cdn.hope.ua/media/shows/ANKU/episodes/00816/ANKU00816-cover.jpg",
+                    "links": {
+                      "prev": "ANKU00716",
+                      "next": "ANKU00916"
+                    },
+                    "show": {
+                      "uid": "ANKU",
+                      "title": "Ангели Надії",
+                      "description": {
+                        "short": "",
+                        "medium": "Проект партнерства: про людей в кадрі та поза ним. Про те як знімаються програми, та як вони змінюють життя глядачів!",
+                        "days": "",
+                        "time": "",
+                        "long": ""
+                      },
+                      "images": {
+                        "cover": "https://cdn.hope.ua/media/shows/ANKU/ANKU-cover.jpg",
+                        "background": "https://cdn.hope.ua/media/defaults/show-background.jpg"
+                      },
+                      "category": {
+                        "uid": "people",
+                        "title": {
+                          "ru": "Люди и мнения",
+                          "uk": "Люди та їх думки"
+                        },
+                        "sort": 8
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Category": {
+      "title": "Category",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "description": "Unique Category ID",
+          "type": "string",
+          "pattern": "^[a-z]+$"
+        },
+        "title": {
+          "description": "Category titles on various languages",
+          "type": "object",
+          "properties": {
+            "ru": {
+              "description": "Russian title",
+              "type": "string"
+            },
+            "uk": {
+              "description": "Ukrainian title",
+              "type": "string"
+            }
+          },
+          "required": [
+            "ru"
+          ]
+        },
+        "sort": {
+          "description": "Category sort order. Used for displaying categories.",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "uid",
+        "title"
+      ]
+    },
+    "Show": {
+      "title": "Show",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "description": "Unique Show ID",
+          "type": "string",
+          "pattern": "^[A-Z]{4}$"
+        },
+        "title": {
+          "description": "Show title",
+          "type": "string"
+        },
+        "description": {
+          "description": "Show descriptions",
+          "type": "object",
+          "properties": {
+            "short": {
+              "description": "One line Show description",
+              "type": "string"
+            },
+            "medium": {
+              "description": "Show annotation",
+              "type": "string"
+            },
+            "long": {
+              "description": "Full Show description",
+              "type": "string"
+            },
+            "days": {
+              "description": "Broadcast days of week",
+              "type": "string"
+            },
+            "time": {
+              "description": "Broadcast time",
+              "type": "string"
+            }
+          }
+        },
+        "images": {
+          "description": "Show images",
+          "type": "object",
+          "properties": {
+            "cover": {
+              "description": "URL for Show cover (1920x1080)",
+              "type": "string"
+            },
+            "background": {
+              "description": "URL for Show background (1920x300)",
+              "type": "string"
+            }
+          },
+          "required": [
+            "cover",
+            "background"
+          ]
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        }
+      },
+      "required": [
+        "uid",
+        "title",
+        "description",
+        "images",
+        "category"
+      ]
+    },
+    "Episode": {
+      "title": "Episode",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "description": "Unique Episode ID",
+          "type": "string",
+          "pattern": "^[A-Z]{4}\\d{5}$"
+        },
+        "title": {
+          "description": "Episode title",
+          "type": "string"
+        },
+        "description": {
+          "description": "Episode description",
+          "type": "string"
+        },
+        "tags": {
+          "description": "List of tags",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "publish": {
+          "description": "Episode publication date in ISO8601 format",
+          "type": "string"
+        },
+        "language": {
+          "description": "Episode main language",
+          "type": "string",
+          "enum": [
+            "ru",
+            "uk",
+            "ru,uk"
+          ]
+        },
+        "author": {
+          "description": "Author or host",
+          "type": "string"
+        },
+        "hd": {
+          "description": "HD flag",
+          "type": "boolean"
+        },
+        "views": {
+          "description": "View count. NOT IMPLEMENTED YET",
+          "type": "integer"
+        },
+        "source": {
+          "description": "Source location of episode video file",
+          "type": "object",
+          "properties": {
+            "local": {
+              "description": "Local source (Hope CDN)",
+              "type": "object",
+              "properties": {
+                "url": {
+                  "description": "Direct URL of video file",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url"
+              ]
+            },
+            "youtube": {
+              "description": "YouTube source",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "YouTube id",
+                  "type": "string"
+                },
+                "channel": {
+                  "description": "YouTube channel alias",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "channel"
+              ]
+            }
+          }
+        },
+        "image": {
+          "description": "Episode cover image URL",
+          "type": "string"
+        },
+        "links": {
+          "description": "Ids of previous and next episode",
+          "type": "object",
+          "properties": {
+            "prev": {
+              "description": "Previous episode code",
+              "type": "string"
+            },
+            "next": {
+              "description": "Next episode code",
+              "type": "string"
+            }
+          }
+        },
+        "show": {
+          "$ref": "#/definitions/Show"
+        }
+      },
+      "required": [
+        "uid",
+        "title",
+        "publish",
+        "hd",
+        "image",
+        "show"
+      ]
+    },
+    "Error": {
+      "title": "Error",
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "Error name",
+              "type": "string"
+            },
+            "message": {
+              "description": "Error message",
+              "type": "string"
+            },
+            "status": {
+              "description": "Status code",
+              "type": "integer"
+            },
+            "statusCode": {
+              "description": "Status code",
+              "type": "integer"
+            },
+            "code": {
+              "description": "Error code",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "message",
+            "code"
+          ]
+        }
+      },
+      "required": [
+        "error"
+      ]
+    }
+  },
+  "parameters": {
+    "showUid": {
+      "name": "uid",
+      "in": "path",
+      "description": "Show unique ID",
+      "required": true,
+      "type": "string",
+      "pattern": "^[A-Z]{4}$"
+    },
+    "episodeUid": {
+      "name": "uid",
+      "in": "path",
+      "description": "Episode unique ID",
+      "required": true,
+      "type": "string",
+      "pattern": "^[A-Z]{4}\\d{5}$"
+    },
+    "limit": {
+      "name": "limit",
+      "in": "query",
+      "description": "Items list limit",
+      "type": "integer",
+      "default": 10
+    },
+    "offset": {
+      "name": "offset",
+      "in": "query",
+      "description": "Items list offset",
+      "type": "integer",
+      "default": 0
+    }
+  }
+}
