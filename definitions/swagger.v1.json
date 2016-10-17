@@ -60,29 +60,31 @@
               "$ref": "#/definitions/ShowList"
             },
             "examples": {
-              "application/json": {
-                "uid": "LMNU",
-                "title": "ЛоМастер",
-                "description": {
-                  "short": "Чтобы сделать маленькие ручки умелыми",
-                  "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
-                  "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
-                  "days": "понедельник-чеверг",
-                  "time": "11:00"
-                },
-                "images": {
-                  "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
-                  "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
-                },
-                "category": {
-                  "uid": "child",
-                  "title": {
-                    "ru": "Детские",
-                    "uk": "Дитячі"
+              "application/json": [
+                {
+                  "uid": "LMNU",
+                  "title": "ЛоМастер",
+                  "description": {
+                    "short": "Чтобы сделать маленькие ручки умелыми",
+                    "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                    "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                    "days": "понедельник-чеверг",
+                    "time": "11:00"
                   },
-                  "sort": 5
+                  "images": {
+                    "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
+                    "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
+                  },
+                  "category": {
+                    "uid": "child",
+                    "title": {
+                      "ru": "Детские",
+                      "uk": "Дитячі"
+                    },
+                    "sort": 5
+                  }
                 }
-              }
+              ]
             }
           }
         }
@@ -102,29 +104,31 @@
               "$ref": "#/definitions/ShowList"
             },
             "examples": {
-              "application/json": {
-                "uid": "LMNU",
-                "title": "ЛоМастер",
-                "description": {
-                  "short": "Чтобы сделать маленькие ручки умелыми",
-                  "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
-                  "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
-                  "days": "понедельник-чеверг",
-                  "time": "11:00"
-                },
-                "images": {
-                  "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
-                  "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
-                },
-                "category": {
-                  "uid": "child",
-                  "title": {
-                    "ru": "Детские",
-                    "uk": "Дитячі"
+              "application/json": [
+                {
+                  "uid": "LMNU",
+                  "title": "ЛоМастер",
+                  "description": {
+                    "short": "Чтобы сделать маленькие ручки умелыми",
+                    "medium": "Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                    "long": "Чтобы сделать маленькие ручки умелыми. Детская сходка в мастерской \"Ломастера\": мастерим, играем, отгадываем и просто отдыхаем!",
+                    "days": "понедельник-чеверг",
+                    "time": "11:00"
                   },
-                  "sort": 5
+                  "images": {
+                    "cover": "https://cdn.hope.ua/media/shows/LMNU/LMNU-cover.jpg",
+                    "background": "https://cdn.hope.ua/media/shows/LMNU/LMNU-background.jpg"
+                  },
+                  "category": {
+                    "uid": "child",
+                    "title": {
+                      "ru": "Детские",
+                      "uk": "Дитячі"
+                    },
+                    "sort": 5
+                  }
                 }
-              }
+              ]
             }
           }
         }
