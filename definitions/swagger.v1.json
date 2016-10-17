@@ -27,7 +27,7 @@
   "paths": {
     "/categories": {
       "get": {
-        "tags": [ "categories" ],
+        "tags": [ "Categories" ],
         "description": "List of categories",
         "responses": {
           "200": {
@@ -51,7 +51,7 @@
     },
     "/shows": {
       "get": {
-        "tags": [ "shows" ],
+        "tags": [ "Shows" ],
         "description": "List of shows",
         "responses": {
           "200": {
@@ -90,7 +90,7 @@
     },
     "/shows/popular": {
       "get": {
-        "tags": [ "shows" ],
+        "tags": [ "Shows" ],
         "description": "List of popular shows",
         "parameters": [
           { "$ref": "#/parameters/limit" }
@@ -132,7 +132,7 @@
     },
     "/shows/{uid}": {
       "get": {
-        "tags": [ "shows" ],
+        "tags": [ "Shows" ],
         "description": "Single show",
         "parameters": [
           {
@@ -182,7 +182,7 @@
     },
     "/shows/{uid}/episodes": {
       "get": {
-        "tags": [ "episodes" ],
+        "tags": [ "Episodes" ],
         "description": "Episode list for current Show",
         "parameters": [
           { "$ref": "#/parameters/showUid" },
@@ -265,7 +265,7 @@
     },
     "/episodes/{uid}": {
       "get": {
-        "tags": [ "episodes" ],
+        "tags": [ "Episodes" ],
         "description": "Single Episode",
         "parameters": [
           { "$ref": "#/parameters/episodeUid" }
@@ -342,7 +342,7 @@
     },
     "/episodes/new": {
       "get": {
-        "tags": [ "episodes" ],
+        "tags": [ "Episodes" ],
         "description": "List of new episodes",
         "parameters": [
           { "$ref": "#/parameters/limit" },
@@ -418,7 +418,7 @@
     },
     "/episodes/recommended": {
       "get": {
-        "tags": [ "episodes" ],
+        "tags": [ "Episodes" ],
         "description": "List of recommended episodes",
         "parameters": [
           { "$ref": "#/parameters/limit" },
@@ -541,12 +541,12 @@
       "required": [ "ru", "uk" ]
     },
     "ShowList": {
-          "title": "Show list",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Show"
-          }
-        },
+      "title": "Show list",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Show"
+      }
+    },
     "Show": {
       "title": "Show",
       "type": "object",
@@ -836,8 +836,17 @@
     }
   },
   "tags": [
-    { "name": "Categories" },
-    { "name": "Shows" },
-    { "name": "Episodes" }
+    {
+      "name": "Categories",
+      "description": "Categories for Show grouping"
+    },
+    {
+      "name": "Shows",
+      "description": "Shows listing"
+    },
+    {
+      "name": "Episodes",
+      "description": "Episode related endpoints"
+    }
   ]
 }
