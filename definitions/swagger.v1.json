@@ -27,15 +27,13 @@
   "paths": {
     "/categories": {
       "get": {
+        "tags": [ "categories" ],
         "description": "List of categories",
         "responses": {
           "200": {
             "description": "List of categories",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Category"
-              }
+              "$ref": "#/definitions/CategoryList"
             },
             "examples": {
               "application/json": {
@@ -53,15 +51,13 @@
     },
     "/shows": {
       "get": {
+        "tags": [ "shows" ],
         "description": "List of shows",
         "responses": {
           "200": {
             "description": "List of shows",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Show"
-              }
+              "$ref": "#/definitions/ShowList"
             },
             "examples": {
               "application/json": {
@@ -94,6 +90,7 @@
     },
     "/shows/popular": {
       "get": {
+        "tags": [ "shows" ],
         "description": "List of popular shows",
         "parameters": [
           { "$ref": "#/parameters/limit" }
@@ -102,10 +99,7 @@
           "200": {
             "description": "List of shows",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Show"
-              }
+              "$ref": "#/definitions/ShowList"
             },
             "examples": {
               "application/json": {
@@ -138,6 +132,7 @@
     },
     "/shows/{uid}": {
       "get": {
+        "tags": [ "shows" ],
         "description": "Single show",
         "parameters": [
           {
@@ -187,6 +182,7 @@
     },
     "/shows/{uid}/episodes": {
       "get": {
+        "tags": [ "episodes" ],
         "description": "Episode list for current Show",
         "parameters": [
           { "$ref": "#/parameters/showUid" },
@@ -197,15 +193,7 @@
           "200": {
             "description": "List of Episodes",
             "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Episode"
-                  }
-                }
-              }
+              "$ref": "#/definitions/EpisodeList"
             },
             "examples": {
               "application/json": {
@@ -277,6 +265,7 @@
     },
     "/episodes/{uid}": {
       "get": {
+        "tags": [ "episodes" ],
         "description": "Single Episode",
         "parameters": [
           { "$ref": "#/parameters/episodeUid" }
@@ -353,6 +342,7 @@
     },
     "/episodes/new": {
       "get": {
+        "tags": [ "episodes" ],
         "description": "List of new episodes",
         "parameters": [
           { "$ref": "#/parameters/limit" },
@@ -362,15 +352,7 @@
           "200": {
             "description": "List of Episodes",
             "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Episode"
-                  }
-                }
-              }
+              "$ref": "#/definitions/EpisodeList"
             },
             "examples": {
               "application/json": {
@@ -436,6 +418,7 @@
     },
     "/episodes/recommended": {
       "get": {
+        "tags": [ "episodes" ],
         "description": "List of recommended episodes",
         "parameters": [
           { "$ref": "#/parameters/limit" },
@@ -445,15 +428,7 @@
           "200": {
             "description": "List of Episodes",
             "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Episode"
-                  }
-                }
-              }
+              "$ref": "#/definitions/EpisodeList"
             },
             "examples": {
               "application/json": {
@@ -519,8 +494,16 @@
     }
   },
   "definitions": {
+    "CategoryList": {
+      "title": "Category list",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Category"
+      }
+    },
     "Category": {
       "title": "Category",
+      "description": "Category",
       "type": "object",
       "properties": {
         "uid": {
@@ -529,21 +512,7 @@
           "pattern": "^[a-z]+$"
         },
         "title": {
-          "description": "Category titles on various languages",
-          "type": "object",
-          "properties": {
-            "ru": {
-              "description": "Russian title",
-              "type": "string"
-            },
-            "uk": {
-              "description": "Ukrainian title",
-              "type": "string"
-            }
-          },
-          "required": [
-            "ru"
-          ]
+          "$ref": "#/definitions/CategoryTitles"
         },
         "sort": {
           "description": "Category sort order. Used for displaying categories.",
@@ -555,6 +524,29 @@
         "title"
       ]
     },
+    "CategoryTitles": {
+      "title": "Category titles",
+      "description": "Category titles on various languages",
+      "type": "object",
+      "properties": {
+        "ru": {
+          "description": "Russian title",
+          "type": "string"
+        },
+        "uk": {
+          "description": "Ukrainian title",
+          "type": "string"
+        }
+      },
+      "required": [ "ru", "uk" ]
+    },
+    "ShowList": {
+          "title": "Show list",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Show"
+          }
+        },
     "Show": {
       "title": "Show",
       "type": "object",
@@ -569,48 +561,10 @@
           "type": "string"
         },
         "description": {
-          "description": "Show descriptions",
-          "type": "object",
-          "properties": {
-            "short": {
-              "description": "One line Show description",
-              "type": "string"
-            },
-            "medium": {
-              "description": "Show annotation",
-              "type": "string"
-            },
-            "long": {
-              "description": "Full Show description",
-              "type": "string"
-            },
-            "days": {
-              "description": "Broadcast days of week",
-              "type": "string"
-            },
-            "time": {
-              "description": "Broadcast time",
-              "type": "string"
-            }
-          }
+          "$ref": "#/definitions/ShowDescription"
         },
         "images": {
-          "description": "Show images",
-          "type": "object",
-          "properties": {
-            "cover": {
-              "description": "URL for Show cover (1920x1080)",
-              "type": "string"
-            },
-            "background": {
-              "description": "URL for Show background (1920x300)",
-              "type": "string"
-            }
-          },
-          "required": [
-            "cover",
-            "background"
-          ]
+          "$ref": "#/definitions/ShowImages"
         },
         "category": {
           "$ref": "#/definitions/Category"
@@ -622,6 +576,50 @@
         "description",
         "images",
         "category"
+      ]
+    },
+    "ShowDescription": {
+      "description": "Show descriptions",
+      "type": "object",
+      "properties": {
+        "short": {
+          "description": "One line Show description",
+          "type": "string"
+        },
+        "medium": {
+          "description": "Show annotation",
+          "type": "string"
+        },
+        "long": {
+          "description": "Full Show description",
+          "type": "string"
+        },
+        "days": {
+          "description": "Broadcast days of week",
+          "type": "string"
+        },
+        "time": {
+          "description": "Broadcast time",
+          "type": "string"
+        }
+      }
+    },
+    "ShowImages": {
+      "description": "Show images",
+      "type": "object",
+      "properties": {
+        "cover": {
+          "description": "URL for Show cover (1920x1080)",
+          "type": "string"
+        },
+        "background": {
+          "description": "URL for Show background (1920x300)",
+          "type": "string"
+        }
+      },
+      "required": [
+        "cover",
+        "background"
       ]
     },
     "Episode": {
@@ -675,59 +673,14 @@
           "type": "integer"
         },
         "source": {
-          "description": "Source location of episode video file",
-          "type": "object",
-          "properties": {
-            "local": {
-              "description": "Local source (Hope CDN)",
-              "type": "object",
-              "properties": {
-                "url": {
-                  "description": "Direct URL of video file",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "url"
-              ]
-            },
-            "youtube": {
-              "description": "YouTube source",
-              "type": "object",
-              "properties": {
-                "id": {
-                  "description": "YouTube id",
-                  "type": "string"
-                },
-                "channel": {
-                  "description": "YouTube channel alias",
-                  "type": "string"
-                }
-              },
-              "required": [
-                "id",
-                "channel"
-              ]
-            }
-          }
+          "$ref": "#/definitions/EpisodeSource"
         },
         "image": {
           "description": "Episode cover image URL",
           "type": "string"
         },
         "links": {
-          "description": "Ids of previous and next episode",
-          "type": "object",
-          "properties": {
-            "prev": {
-              "description": "Previous episode code",
-              "type": "string"
-            },
-            "next": {
-              "description": "Next episode code",
-              "type": "string"
-            }
-          }
+          "$ref": "#/definitions/EpisodeLinks"
         },
         "show": {
           "$ref": "#/definitions/Show"
@@ -741,6 +694,74 @@
         "image",
         "show"
       ]
+    },
+    "EpisodeList": {
+      "title": "Episode list",
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Episode"
+          }
+        }
+      },
+      "required": [ "data" ]
+    },
+    "EpisodeSource": {
+      "title": "Episode source",
+      "description": "Source location of episode video file",
+      "type": "object",
+      "properties": {
+        "local": {
+          "$ref": "#/definitions/EpisodeSourceLocal"
+        },
+        "youtube": {
+          "$ref": "#/definitions/EpisodeSourceYoutube"
+        }
+      }
+    },
+    "EpisodeSourceLocal": {
+      "title": "Local",
+      "description": "Local source (Hope CDN)",
+      "type": "object",
+      "properties": {
+        "url": {
+          "description": "Direct URL of video file",
+          "type": "string"
+        }
+      },
+      "required": [ "url" ]
+    },
+    "EpisodeSourceYoutube": {
+      "title": "YouTube",
+      "description": "YouTube source",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "YouTube id",
+          "type": "string"
+        },
+        "channel": {
+          "description": "YouTube channel alias",
+          "type": "string"
+        }
+      },
+      "required": [ "id", "channel" ]
+    },
+    "EpisodeLinks": {
+      "description": "Ids of previous and next episode",
+      "type": "object",
+      "properties": {
+        "prev": {
+          "description": "Previous episode code",
+          "type": "string"
+        },
+        "next": {
+          "description": "Next episode code",
+          "type": "string"
+        }
+      }
     },
     "Error": {
       "title": "Error",
@@ -813,5 +834,10 @@
       "type": "integer",
       "default": 0
     }
-  }
+  },
+  "tags": [
+    { "name": "Categories" },
+    { "name": "Shows" },
+    { "name": "Episodes" }
+  ]
 }
