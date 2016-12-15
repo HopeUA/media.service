@@ -1,7 +1,12 @@
 import Fetch from 'node-fetch';
 import App from 'server/server';
+import Healthcheck from 'common/utils/healthcheck';
 
 async function isResourceExists(url) {
+    if (!Healthcheck.isOnline('cdn')) {
+        return false;
+    }
+
     let exists = null;
     try {
         exists = await App.cache.getAsync(url);
@@ -10,12 +15,18 @@ async function isResourceExists(url) {
     }
 
     if (exists === null) {
-        const response = await Fetch(url, {
-            method: 'HEAD'
-        });
-        exists = response.status === 200;
+        try {
+            const response = await Fetch(url, {
+                method: 'HEAD'
+            });
+            exists = response.status === 200;
 
-        App.cache.setAsync(url, exists);
+            App.cache.setAsync(url, exists);
+        } catch (error) {
+            Healthcheck.setOffline('cdn');
+            exists = false;
+            console.error(error);
+        }
     }
 
     return exists;
